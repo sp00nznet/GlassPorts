@@ -1,0 +1,5 @@
+# GlassPorts Keylayout - GPIO Keys
+# Google Glass Explorer Edition
+
+key 116   POWER
+key 212   CAMERA

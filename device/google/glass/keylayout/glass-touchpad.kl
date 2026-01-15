@@ -1,0 +1,23 @@
+# GlassPorts Keylayout - Glass Touchpad
+# Google Glass Explorer Edition
+
+# Physical button on Glass frame
+key 212   CAMERA
+
+# Touchpad gestures mapped to keys
+key 158   BACK
+key 139   MENU
+key 102   HOME
+
+# Volume (swipe forward/backward)
+key 115   VOLUME_UP
+key 114   VOLUME_DOWN
+
+# Touchpad tap
+key 330   BUTTON_SELECT
+
+# Power button
+key 116   POWER
+
+# Wink detection (eye gesture)
+key 200   BUTTON_A

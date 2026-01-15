@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GlassPorts Launcher</string>
+    <string name="apps_title">Apps</string>
+    <string name="status_ready">ok glass</string>
+    <string name="hint_tap">Tap to open apps</string>
+    <string name="hint_swipe_select">Swipe to browse, tap to select</string>
+</resources>

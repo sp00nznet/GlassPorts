@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    GlassPorts Settings
+    Minimal settings app for Google Glass
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.glassports.settings"
+    android:sharedUserId="android.uid.system">
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+    <uses-permission android:name="android.permission.DUMP" />
+    <uses-permission android:name="android.permission.MASTER_CLEAR" />
+    <uses-permission android:name="android.permission.REBOOT" />
+
+    <application
+        android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/GlassSettingsTheme">
+
+        <!-- Main settings activity -->
+        <activity
+            android:name=".GlassSettingsActivity"
+            android:exported="true"
+            android:screenOrientation="nosensor">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.settings.SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- WiFi AP Settings -->
+        <activity
+            android:name=".WifiApSettingsActivity"
+            android:exported="true"
+            android:screenOrientation="nosensor"
+            android:parentActivityName=".GlassSettingsActivity">
+            <intent-filter>
+                <action android:name="android.settings.WIFI_AP_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- WiFi Settings -->
+        <activity
+            android:name=".WifiSettingsActivity"
+            android:exported="true"
+            android:screenOrientation="nosensor"
+            android:parentActivityName=".GlassSettingsActivity">
+            <intent-filter>
+                <action android:name="android.settings.WIFI_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Bluetooth Settings -->
+        <activity
+            android:name=".BluetoothSettingsActivity"
+            android:exported="true"
+            android:screenOrientation="nosensor"
+            android:parentActivityName=".GlassSettingsActivity">
+            <intent-filter>
+                <action android:name="android.settings.BLUETOOTH_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <!-- Display Settings -->
+        <activity
+            android:name=".DisplaySettingsActivity"
+            android:exported="true"
+            android:screenOrientation="nosensor"
+            android:parentActivityName=".GlassSettingsActivity" />
+
+        <!-- About Settings -->
+        <activity
+            android:name=".AboutSettingsActivity"
+            android:exported="true"
+            android:screenOrientation="nosensor"
+            android:parentActivityName=".GlassSettingsActivity" />
+
+        <!-- Developer Options -->
+        <activity
+            android:name=".DeveloperSettingsActivity"
+            android:exported="true"
+            android:screenOrientation="nosensor"
+            android:parentActivityName=".GlassSettingsActivity">
+            <intent-filter>
+                <action android:name="android.settings.APPLICATION_DEVELOPMENT_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+    </application>
+
+</manifest>

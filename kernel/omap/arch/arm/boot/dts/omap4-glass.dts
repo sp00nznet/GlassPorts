@@ -1,0 +1,232 @@
+/*
+ * GlassPorts Device Tree
+ * Google Glass Explorer Edition - TI OMAP4430
+ */
+
+/dts-v1/;
+
+#include "omap4.dtsi"
+
+/ {
+    model = "Google Glass Explorer Edition";
+    compatible = "google,glass", "ti,omap4430", "ti,omap4";
+
+    memory@80000000 {
+        device_type = "memory";
+        reg = <0x80000000 0x40000000>; /* 1GB */
+    };
+
+    chosen {
+        bootargs = "console=ttyO2,115200n8 mem=1G vmalloc=496M androidboot.hardware=glass";
+    };
+
+    aliases {
+        display0 = &lcd0;
+    };
+
+    /* WiFi power */
+    wlan_en_reg: fixedregulator-wlan {
+        compatible = "regulator-fixed";
+        regulator-name = "wlan-en-regulator";
+        regulator-min-microvolt = <1800000>;
+        regulator-max-microvolt = <1800000>;
+        gpio = <&gpio2 22 GPIO_ACTIVE_HIGH>; /* GPIO 54 */
+        startup-delay-us = <70000>;
+        enable-active-high;
+    };
+
+    /* Glass prism display */
+    lcd0: display {
+        compatible = "google,glass-display";
+        label = "glass-prism";
+
+        /* LCoS display 640x360 */
+        panel-timing {
+            clock-frequency = <27000000>;
+            hactive = <640>;
+            vactive = <360>;
+            hfront-porch = <16>;
+            hback-porch = <48>;
+            hsync-len = <96>;
+            vfront-porch = <10>;
+            vback-porch = <33>;
+            vsync-len = <2>;
+        };
+    };
+
+    /* Bone conduction speaker */
+    sound {
+        compatible = "google,glass-audio";
+        ti,model = "Glass-Audio";
+        ti,mcbsp = <&mcbsp2>;
+        ti,codec = <&twl6040>;
+    };
+
+    /* RGB LED */
+    leds {
+        compatible = "gpio-leds";
+
+        led-red {
+            label = "glass:red";
+            gpios = <&gpio6 26 GPIO_ACTIVE_HIGH>; /* GPIO 186 */
+        };
+
+        led-green {
+            label = "glass:green";
+            gpios = <&gpio6 27 GPIO_ACTIVE_HIGH>; /* GPIO 187 */
+        };
+
+        led-blue {
+            label = "glass:blue";
+            gpios = <&gpio6 28 GPIO_ACTIVE_HIGH>; /* GPIO 188 */
+        };
+    };
+
+    /* GPIO keys */
+    gpio-keys {
+        compatible = "gpio-keys";
+
+        camera-button {
+            label = "Camera Button";
+            linux,code = <212>; /* KEY_CAMERA */
+            gpios = <&gpio3 15 GPIO_ACTIVE_LOW>; /* GPIO 79 */
+            wakeup-source;
+        };
+    };
+};
+
+/* UART for console */
+&uart3 {
+    status = "okay";
+};
+
+/* I2C buses */
+&i2c1 {
+    status = "okay";
+    clock-frequency = <400000>;
+
+    twl6040: twl6040@4b {
+        compatible = "ti,twl6040";
+        reg = <0x4b>;
+
+        interrupts-extended = <&gic GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>;
+
+        ti,audpwron-gpio = <&gpio4 31 GPIO_ACTIVE_HIGH>;
+
+        vio-supply = <&v1v8>;
+        v2v1-supply = <&v2v1>;
+
+        #clock-cells = <0>;
+        clock-frequency = <38400000>;
+    };
+};
+
+&i2c2 {
+    status = "okay";
+    clock-frequency = <400000>;
+
+    /* MPU6050 IMU */
+    mpu6050@68 {
+        compatible = "invensense,mpu6050";
+        reg = <0x68>;
+        interrupt-parent = <&gpio2>;
+        interrupts = <13 IRQ_TYPE_EDGE_RISING>;
+    };
+
+    /* AK8975 Magnetometer */
+    ak8975@0c {
+        compatible = "asahi-kasei,ak8975";
+        reg = <0x0c>;
+    };
+
+    /* BMP280 Pressure sensor */
+    bmp280@76 {
+        compatible = "bosch,bmp280";
+        reg = <0x76>;
+    };
+};
+
+&i2c3 {
+    status = "okay";
+    clock-frequency = <400000>;
+
+    /* Cypress touchpad */
+    touchpad@24 {
+        compatible = "cypress,cyttsp4_i2c";
+        reg = <0x24>;
+        interrupt-parent = <&gpio3>;
+        interrupts = <21 IRQ_TYPE_EDGE_FALLING>;
+    };
+};
+
+&i2c4 {
+    status = "okay";
+    clock-frequency = <400000>;
+
+    /* OV5640 Camera */
+    ov5640@3c {
+        compatible = "ovti,ov5640";
+        reg = <0x3c>;
+
+        clocks = <&isp 0>;
+        clock-names = "xclk";
+
+        reset-gpios = <&gpio3 19 GPIO_ACTIVE_LOW>;
+        powerdown-gpios = <&gpio3 20 GPIO_ACTIVE_HIGH>;
+
+        port {
+            ov5640_ep: endpoint {
+                remote-endpoint = <&csi2a_ep>;
+                clock-lanes = <0>;
+                data-lanes = <1 2>;
+            };
+        };
+    };
+};
+
+/* eMMC */
+&mmc1 {
+    status = "okay";
+    vmmc-supply = <&vmmc>;
+    bus-width = <8>;
+    non-removable;
+};
+
+/* WiFi - WL1271 */
+&mmc5 {
+    status = "okay";
+    vmmc-supply = <&wlan_en_reg>;
+    bus-width = <4>;
+    non-removable;
+    cap-power-off-card;
+    keep-power-in-suspend;
+
+    #address-cells = <1>;
+    #size-cells = <0>;
+
+    wlcore: wlcore@2 {
+        compatible = "ti,wl1271";
+        reg = <2>;
+        interrupt-parent = <&gpio2>;
+        interrupts = <21 IRQ_TYPE_EDGE_RISING>;
+        ref-clock-frequency = <38400000>;
+    };
+};
+
+/* USB */
+&usb_otg_hs {
+    status = "okay";
+    interface-type = <1>;
+    mode = <3>;
+    power = <50>;
+};
+
+/* GPU */
+&gpu {
+    status = "okay";
+};
+
+/* DSS */
+&dss {
+    status = "okay";
+};

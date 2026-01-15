@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GlassPorts WiFi AP</string>
+    <string name="wifi_ap_notification_title">WiFi Hotspot</string>
+    <string name="wifi_ap_notification_active">WiFi hotspot is active</string>
+    <string name="wifi_ap_notification_clients">%d device(s) connected</string>
+</resources>
