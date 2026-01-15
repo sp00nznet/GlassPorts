@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    GlassPorts App List Layout
+    Horizontal scrolling app list for Glass
+-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black">
+
+    <!-- Header -->
+    <TextView
+        android:id="@+id/header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:text="@string/apps_title" />
+
+    <!-- App list -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/app_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:clipToPadding="false"
+        android:paddingStart="48dp"
+        android:paddingEnd="48dp" />
+
+    <!-- Navigation hint -->
+    <TextView
+        android:id="@+id/nav_hint"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="12sp"
+        android:text="@string/hint_swipe_select" />
+
+</RelativeLayout>

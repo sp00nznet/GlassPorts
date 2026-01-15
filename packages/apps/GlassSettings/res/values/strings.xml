@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Settings</string>
+
+    <!-- WiFi -->
+    <string name="wifi_title">WiFi</string>
+    <string name="wifi_summary">Connect to networks</string>
+    <string name="wifi_on">WiFi is on</string>
+    <string name="wifi_off">WiFi is off</string>
+
+    <!-- WiFi AP -->
+    <string name="wifi_ap_title">WiFi Hotspot</string>
+    <string name="wifi_ap_summary">Share your connection</string>
+    <string name="wifi_ap_on">Hotspot is active</string>
+    <string name="wifi_ap_off">Hotspot is off</string>
+    <string name="wifi_ap_enabling">Turning on hotspot...</string>
+    <string name="wifi_ap_disabling">Turning off hotspot...</string>
+    <string name="wifi_ap_ssid_label">Network name</string>
+    <string name="wifi_ap_ssid_title">Set network name</string>
+    <string name="wifi_ap_password_label">Password</string>
+    <string name="wifi_ap_password_title">Set password</string>
+
+    <!-- Bluetooth -->
+    <string name="bluetooth_title">Bluetooth</string>
+    <string name="bluetooth_summary">Pair devices</string>
+    <string name="bluetooth_on">Bluetooth is on</string>
+    <string name="bluetooth_off">Bluetooth is off</string>
+
+    <!-- Display -->
+    <string name="display_title">Display</string>
+    <string name="display_summary">Brightness settings</string>
+    <string name="brightness_label">Brightness</string>
+
+    <!-- Developer -->
+    <string name="developer_title">Developer</string>
+    <string name="developer_summary">ADB and debug options</string>
+    <string name="adb_title">USB debugging</string>
+    <string name="adb_enabled">ADB enabled - sideloading ready</string>
+    <string name="adb_disabled">ADB disabled</string>
+    <string name="stay_awake_title">Stay awake</string>
+    <string name="stay_awake_summary">Screen will not sleep while charging</string>
+
+    <!-- About -->
+    <string name="about_title">About</string>
+    <string name="about_summary">Device information</string>
+    <string name="about_model_label">Device</string>
+    <string name="about_android_label">Android version</string>
+    <string name="about_build_label">Build number</string>
+    <string name="about_glassports_label">GlassPorts version</string>
+    <string name="glassports_version">GlassPorts 1.0</string>
+</resources>

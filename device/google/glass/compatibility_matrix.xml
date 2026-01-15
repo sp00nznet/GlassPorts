@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    GlassPorts Compatibility Matrix
+    Google Glass Explorer Edition
+-->
+<compatibility-matrix version="1.0" type="device">
+    <hal format="hidl" optional="false">
+        <name>android.hardware.graphics.composer</name>
+        <version>2.1</version>
+        <interface>
+            <name>IComposer</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="false">
+        <name>android.hardware.graphics.mapper</name>
+        <version>2.0</version>
+        <interface>
+            <name>IMapper</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>android.hardware.wifi</name>
+        <version>1.0-2</version>
+        <interface>
+            <name>IWifi</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+    <hal format="hidl" optional="true">
+        <name>android.hardware.wifi.hostapd</name>
+        <version>1.0</version>
+        <interface>
+            <name>IHostapd</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
+</compatibility-matrix>

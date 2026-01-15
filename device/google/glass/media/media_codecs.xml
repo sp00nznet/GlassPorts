@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    GlassPorts Media Codecs
+    Google Glass Explorer Edition - OMAP4430
+-->
+<MediaCodecs>
+    <Include href="media_codecs_google_audio.xml" />
+    <Include href="media_codecs_google_video.xml" />
+
+    <Settings>
+        <Setting name="max-video-encoder-input-buffers" value="9" />
+    </Settings>
+
+    <Encoders>
+        <!-- Video Encoders -->
+        <MediaCodec name="OMX.TI.DUCATI1.VIDEO.H264E" type="video/avc" >
+            <Limit name="size" min="96x96" max="1280x720" />
+            <Limit name="alignment" value="2x2" />
+            <Limit name="block-size" value="16x16" />
+            <Limit name="bitrate" range="1-12000000" />
+            <Feature name="can-swap-width-height" />
+        </MediaCodec>
+        <MediaCodec name="OMX.TI.DUCATI1.VIDEO.MPEG4E" type="video/mp4v-es" >
+            <Limit name="size" min="96x96" max="1280x720" />
+            <Limit name="alignment" value="2x2" />
+            <Limit name="bitrate" range="1-10000000" />
+        </MediaCodec>
+    </Encoders>
+
+    <Decoders>
+        <!-- Video Decoders -->
+        <MediaCodec name="OMX.TI.DUCATI1.VIDEO.DECODER" type="video/avc" >
+            <Limit name="size" min="16x16" max="1920x1080" />
+            <Limit name="alignment" value="2x2" />
+            <Feature name="adaptive-playback" />
+        </MediaCodec>
+        <MediaCodec name="OMX.TI.DUCATI1.VIDEO.DECODER" type="video/mp4v-es" >
+            <Limit name="size" min="16x16" max="1920x1080" />
+        </MediaCodec>
+        <MediaCodec name="OMX.TI.DUCATI1.VIDEO.DECODER" type="video/3gpp" >
+            <Limit name="size" min="16x16" max="1920x1080" />
+        </MediaCodec>
+    </Decoders>
+</MediaCodecs>

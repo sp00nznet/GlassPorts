@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    GlassPorts Media Profiles
+    Google Glass Explorer Edition - 5MP Camera
+-->
+<MediaSettings>
+    <!-- Camera -->
+    <CamcorderProfiles cameraId="0">
+        <!-- 720p recording -->
+        <EncoderProfile quality="720p" fileFormat="mp4" duration="60">
+            <Video codec="h264"
+                   bitRate="8000000"
+                   width="1280"
+                   height="720"
+                   frameRate="30" />
+            <Audio codec="aac"
+                   bitRate="96000"
+                   sampleRate="44100"
+                   channels="1" />
+        </EncoderProfile>
+
+        <!-- 480p recording -->
+        <EncoderProfile quality="480p" fileFormat="mp4" duration="60">
+            <Video codec="h264"
+                   bitRate="4000000"
+                   width="640"
+                   height="480"
+                   frameRate="30" />
+            <Audio codec="aac"
+                   bitRate="96000"
+                   sampleRate="44100"
+                   channels="1" />
+        </EncoderProfile>
+
+        <!-- Low quality -->
+        <EncoderProfile quality="low" fileFormat="3gp" duration="60">
+            <Video codec="h264"
+                   bitRate="256000"
+                   width="320"
+                   height="240"
+                   frameRate="15" />
+            <Audio codec="amrnb"
+                   bitRate="12200"
+                   sampleRate="8000"
+                   channels="1" />
+        </EncoderProfile>
+
+        <!-- High quality -->
+        <EncoderProfile quality="high" fileFormat="mp4" duration="60">
+            <Video codec="h264"
+                   bitRate="8000000"
+                   width="1280"
+                   height="720"
+                   frameRate="30" />
+            <Audio codec="aac"
+                   bitRate="128000"
+                   sampleRate="44100"
+                   channels="1" />
+        </EncoderProfile>
+
+        <ImageEncoding quality="95" />
+        <ImageEncoding quality="80" />
+        <ImageEncoding quality="70" />
+        <ImageDecoding memCap="20000000" />
+    </CamcorderProfiles>
+
+    <EncoderOutputFileFormat name="3gp" />
+    <EncoderOutputFileFormat name="mp4" />
+
+    <VideoEncoderCap name="h264" enabled="true"
+        minBitRate="64000" maxBitRate="12000000"
+        minFrameWidth="96" maxFrameWidth="1280"
+        minFrameHeight="96" maxFrameHeight="720"
+        minFrameRate="15" maxFrameRate="30" />
+
+    <VideoEncoderCap name="mpeg4" enabled="true"
+        minBitRate="64000" maxBitRate="10000000"
+        minFrameWidth="96" maxFrameWidth="1280"
+        minFrameHeight="96" maxFrameHeight="720"
+        minFrameRate="15" maxFrameRate="30" />
+
+    <AudioEncoderCap name="aac" enabled="true"
+        minBitRate="8000" maxBitRate="128000"
+        minSampleRate="8000" maxSampleRate="48000"
+        minChannels="1" maxChannels="2" />
+
+    <AudioEncoderCap name="amrnb" enabled="true"
+        minBitRate="5525" maxBitRate="12200"
+        minSampleRate="8000" maxSampleRate="8000"
+        minChannels="1" maxChannels="1" />
+
+    <VideoDecoderCap name="wmv" enabled="false"/>
+</MediaSettings>

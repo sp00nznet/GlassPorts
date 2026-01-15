@@ -1,0 +1,36 @@
+#
+# GlassPorts USB Configuration
+# Enable sideloading and ADB by default
+#
+
+on boot
+    setprop sys.usb.configfs 1
+
+on property:sys.usb.config=none
+    stop adbd
+    write /config/usb_gadget/g1/UDC "none"
+    setprop sys.usb.state ${sys.usb.config}
+
+on property:sys.usb.config=adb
+    start adbd
+
+on property:sys.usb.config=mtp
+    write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "mtp"
+    symlink /config/usb_gadget/g1/functions/mtp.gs0 /config/usb_gadget/g1/configs/b.1/f1
+    write /config/usb_gadget/g1/UDC ${sys.usb.controller}
+    setprop sys.usb.state ${sys.usb.config}
+
+on property:sys.usb.config=mtp,adb
+    start adbd
+    write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "mtp_adb"
+    symlink /config/usb_gadget/g1/functions/mtp.gs0 /config/usb_gadget/g1/configs/b.1/f1
+    symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f2
+    write /config/usb_gadget/g1/UDC ${sys.usb.controller}
+    setprop sys.usb.state ${sys.usb.config}
+
+on property:sys.usb.ffs.ready=1 && property:sys.usb.config=mtp,adb
+    write /config/usb_gadget/g1/UDC ${sys.usb.controller}
+
+# Default to MTP+ADB for easy sideloading
+on property:sys.usb.configfs=1
+    setprop sys.usb.config mtp,adb

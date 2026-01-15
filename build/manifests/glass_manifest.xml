@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    GlassPorts Local Manifest
+    Adds Google Glass device tree to AOSP build
+-->
+<manifest>
+    <!-- Remove default launchers and apps we don't need -->
+    <remove-project name="platform/packages/apps/Launcher2" />
+    <remove-project name="platform/packages/apps/Launcher3" />
+    <remove-project name="platform/packages/apps/Browser" />
+    <remove-project name="platform/packages/apps/Browser2" />
+    <remove-project name="platform/packages/apps/Calendar" />
+    <remove-project name="platform/packages/apps/Camera2" />
+    <remove-project name="platform/packages/apps/Contacts" />
+    <remove-project name="platform/packages/apps/Dialer" />
+    <remove-project name="platform/packages/apps/Email" />
+    <remove-project name="platform/packages/apps/Gallery" />
+    <remove-project name="platform/packages/apps/Gallery2" />
+    <remove-project name="platform/packages/apps/Music" />
+    <remove-project name="platform/packages/apps/QuickSearchBox" />
+
+    <!-- GlassPorts device tree (will be symlinked from local) -->
+    <!--
+    <project path="device/google/glass"
+             name="GlassPorts/device_google_glass"
+             remote="github"
+             revision="main" />
+    -->
+
+    <!-- GlassPorts vendor blobs (will be symlinked from local) -->
+    <!--
+    <project path="vendor/google/glass"
+             name="GlassPorts/vendor_google_glass"
+             remote="github"
+             revision="main" />
+    -->
+
+    <!-- GlassPorts kernel (will be symlinked from local) -->
+    <!--
+    <project path="kernel/omap"
+             name="GlassPorts/kernel_omap"
+             remote="github"
+             revision="main" />
+    -->
+</manifest>

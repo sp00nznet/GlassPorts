@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    GlassPorts Permissions
+    Google Glass Explorer Edition
+-->
+<permissions>
+    <!-- Glass-specific features -->
+    <feature name="com.google.glass" />
+    <feature name="com.google.glass.hardware.touchpad" />
+    <feature name="com.google.glass.hardware.prism" />
+    <feature name="com.google.glass.hardware.bone_conduction" />
+
+    <!-- GlassPorts features -->
+    <feature name="com.glassports.wifi.ap" />
+    <feature name="com.glassports.sideload" />
+
+    <!-- Indicate this is a wearable device -->
+    <feature name="android.hardware.type.watch" />
+
+    <!-- No telephony -->
+    <unavailable-feature name="android.hardware.telephony" />
+    <unavailable-feature name="android.hardware.telephony.cdma" />
+    <unavailable-feature name="android.hardware.telephony.gsm" />
+
+    <!-- No NFC -->
+    <unavailable-feature name="android.hardware.nfc" />
+
+    <!-- No multi-touch -->
+    <unavailable-feature name="android.hardware.touchscreen.multitouch" />
+    <unavailable-feature name="android.hardware.touchscreen.multitouch.distinct" />
+    <unavailable-feature name="android.hardware.touchscreen.multitouch.jazzhand" />
+</permissions>

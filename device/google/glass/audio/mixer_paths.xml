@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    GlassPorts Audio Mixer Paths
+    Google Glass Explorer Edition
+-->
+<mixer>
+    <!-- Default controls -->
+    <ctl name="Speaker Playback Volume" value="120" />
+    <ctl name="Speaker Playback Switch" value="1" />
+    <ctl name="Headphone Playback Volume" value="120" />
+    <ctl name="Headphone Playback Switch" value="0" />
+    <ctl name="Mic Capture Volume" value="100" />
+    <ctl name="Mic Capture Switch" value="1" />
+
+    <!-- Paths -->
+    <path name="speaker">
+        <ctl name="Speaker Playback Switch" value="1" />
+        <ctl name="Headphone Playback Switch" value="0" />
+    </path>
+
+    <path name="headphones">
+        <ctl name="Speaker Playback Switch" value="0" />
+        <ctl name="Headphone Playback Switch" value="1" />
+    </path>
+
+    <path name="speaker-and-headphones">
+        <ctl name="Speaker Playback Switch" value="1" />
+        <ctl name="Headphone Playback Switch" value="1" />
+    </path>
+
+    <path name="builtin-mic">
+        <ctl name="Mic Capture Switch" value="1" />
+    </path>
+
+    <!-- Bone conduction specific -->
+    <path name="bone-conduction">
+        <ctl name="Speaker Playback Switch" value="1" />
+        <ctl name="Speaker Mode" value="bone-conduction" />
+    </path>
+</mixer>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    GlassPorts Settings Overlay
+    Google Glass Explorer Edition
+-->
+<resources>
+    <!-- Disable Settings panels not needed on Glass -->
+    <bool name="config_show_wifi_setup">false</bool>
+    <bool name="config_show_network_suggestions">false</bool>
+    <bool name="config_show_sim_card_manager">false</bool>
+    <bool name="config_show_mobile_network">false</bool>
+    <bool name="config_show_data_saver">false</bool>
+    <bool name="config_show_emergency_alert_settings">false</bool>
+    <bool name="config_show_screen_saver_settings">false</bool>
+    <bool name="config_show_lock_screen">false</bool>
+    <bool name="config_show_device_admins">false</bool>
+
+    <!-- Enable developer options by default for sideloading -->
+    <bool name="config_settingsDeveloperOptionsEnabledByDefault">true</bool>
+</resources>

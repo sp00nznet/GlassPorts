@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    GlassPorts WiFi Access Point Service
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.glassports.wifiap"
+    android:sharedUserId="android.uid.system">
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+
+    <application
+        android:label="@string/app_name"
+        android:persistent="true">
+
+        <service
+            android:name=".WifiApService"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.glassports.wifiap.WIFI_AP_SERVICE" />
+            </intent-filter>
+        </service>
+
+        <receiver
+            android:name=".WifiApReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.glassports.wifiap.WIFI_AP_ENABLE" />
+                <action android:name="com.glassports.wifiap.WIFI_AP_DISABLE" />
+            </intent-filter>
+        </receiver>
+
+    </application>
+
+</manifest>

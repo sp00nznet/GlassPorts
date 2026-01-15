@@ -1,0 +1,9 @@
+# GlassPorts SELinux Policy - hostapd
+# WiFi Access Point Service
+
+type hostapd_data_file, file_type, data_file_type;
+
+allow hostapd hostapd_data_file:dir create_dir_perms;
+allow hostapd hostapd_data_file:file create_file_perms;
+allow hostapd wifi_data_file:dir rw_dir_perms;
+allow hostapd wifi_data_file:file create_file_perms;
