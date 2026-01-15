@@ -267,6 +267,79 @@ package_rom() {
     return 0
 }
 
+# Install all dependencies automatically
+install_deps() {
+    log_info "Installing build dependencies..."
+
+    local install_script="${GLASSPORTS_BUILD}/tools/install-deps.sh"
+
+    if [ -f "$install_script" ]; then
+        chmod +x "$install_script"
+        bash "$install_script"
+    else
+        log_error "Dependency installer not found: $install_script"
+        return 1
+    fi
+
+    log_success "Dependencies installed"
+    return 0
+}
+
+# Download factory images and extract blobs
+download_blobs() {
+    local version="${1:-XE24}"
+
+    log_info "Downloading factory images and extracting blobs..."
+
+    local download_script="${GLASSPORTS_BUILD}/tools/download-factory-images.sh"
+
+    if [ -f "$download_script" ]; then
+        chmod +x "$download_script"
+        bash "$download_script" "$version"
+    else
+        log_error "Factory image downloader not found: $download_script"
+        return 1
+    fi
+
+    log_success "Blobs extracted"
+    return 0
+}
+
+# Full automated build - everything in one command
+full_build() {
+    local android_version="${1:-9}"
+    local jobs="${2:-$(nproc)}"
+
+    log_info "Starting full automated build for Android $android_version..."
+
+    # Map version to branch
+    case $android_version in
+        9)  export AOSP_BRANCH="android-9.0.0_r61" ;;
+        8)  export AOSP_BRANCH="android-8.1.0_r81" ;;
+        7)  export AOSP_BRANCH="android-7.1.2_r39" ;;
+        6)  export AOSP_BRANCH="android-6.0.1_r81" ;;
+        5)  export AOSP_BRANCH="android-5.1.1_r38" ;;
+        4)  export AOSP_BRANCH="android-4.4.4_r2" ;;
+        *)
+            log_error "Invalid Android version: $android_version"
+            return 1
+            ;;
+    esac
+
+    log_info "Using AOSP branch: $AOSP_BRANCH"
+
+    # Run all steps
+    check_dependencies || return 1
+    init_aosp || return 1
+    sync_aosp "$jobs" || return 1
+    setup_device || return 1
+    build_rom "$jobs" || return 1
+    package_rom || return 1
+
+    log_success "Full build complete!"
+    return 0
+}
+
 # Print help
 glassports_help() {
     echo ""
@@ -275,16 +348,19 @@ glassports_help() {
     echo ""
     echo "Available commands:"
     echo "  check_dependencies  - Check if all build dependencies are installed"
+    echo "  install_deps        - AUTO-INSTALL all build dependencies"
+    echo "  download_blobs [VER]- Download Glass factory images & extract blobs"
     echo "  select_aosp_version - Select AOSP version to build"
-    echo "  init_aosp          - Initialize AOSP source repository"
-    echo "  sync_aosp [jobs]   - Sync AOSP source (default: 4 jobs)"
-    echo "  setup_device       - Setup Google Glass device tree"
-    echo "  build_rom [jobs]   - Build the ROM (default: all cores)"
-    echo "  clean_build        - Clean build artifacts"
-    echo "  package_rom        - Package ROM for flashing"
-    echo "  glassports_help    - Show this help message"
+    echo "  init_aosp           - Initialize AOSP source repository"
+    echo "  sync_aosp [jobs]    - Sync AOSP source (default: 4 jobs)"
+    echo "  setup_device        - Setup Google Glass device tree"
+    echo "  build_rom [jobs]    - Build the ROM (default: all cores)"
+    echo "  clean_build         - Clean build artifacts"
+    echo "  package_rom         - Package ROM for flashing"
+    echo "  full_build [ver] [j]- FULL AUTOMATED BUILD (ver=4-9, j=jobs)"
+    echo "  glassports_help     - Show this help message"
     echo ""
-    echo "Quick start:"
+    echo "Quick start (manual):"
     echo "  1. source build/envsetup.sh"
     echo "  2. check_dependencies"
     echo "  3. select_aosp_version"
@@ -293,6 +369,13 @@ glassports_help() {
     echo "  6. setup_device"
     echo "  7. build_rom"
     echo "  8. package_rom"
+    echo ""
+    echo "One-click build (automated):"
+    echo "  source build/envsetup.sh && full_build 9"
+    echo ""
+    echo "Or use the build scripts:"
+    echo "  Linux:   ./build-glassports.sh"
+    echo "  Windows: build-glassports.bat (double-click)"
     echo ""
 }
 
