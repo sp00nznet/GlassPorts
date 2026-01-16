@@ -117,8 +117,13 @@ download_with_retry() {
 
         if curl -L -# -o "$output" "$url" 2>&1; then
             # Verify file is not empty and is a valid zip
-            if [ -s "$output" ] && file "$output" | grep -q "Zip archive"; then
-                return 0
+            if [ -s "$output" ]; then
+                # Try file command first, fall back to unzip test
+                if command -v file &> /dev/null; then
+                    file "$output" | grep -q -i "zip" && return 0
+                else
+                    unzip -t "$output" &> /dev/null && return 0
+                fi
             fi
         fi
 
