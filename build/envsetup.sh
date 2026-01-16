@@ -19,6 +19,17 @@ export GLASSPORTS_DEVICE="${GLASSPORTS_ROOT}/device/google/glass"
 export GLASSPORTS_VENDOR="${GLASSPORTS_ROOT}/vendor/google/glass"
 export GLASSPORTS_KERNEL="${GLASSPORTS_ROOT}/kernel/omap"
 
+# AOSP must be on a case-sensitive filesystem
+# If running on Windows/WSL, use the native Linux filesystem
+if [[ "$GLASSPORTS_ROOT" == /mnt/* ]]; then
+    # Running from Windows mount - use WSL native filesystem for AOSP
+    export GLASSPORTS_AOSP="$HOME/GlassPorts-aosp"
+    log_warning "Windows filesystem detected. AOSP will be stored in: $GLASSPORTS_AOSP" 2>/dev/null || true
+else
+    # Native Linux - can use local directory
+    export GLASSPORTS_AOSP="${GLASSPORTS_ROOT}/aosp"
+fi
+
 # AOSP configuration
 export AOSP_MIRROR="https://android.googlesource.com"
 export AOSP_BRANCH=""
@@ -125,7 +136,7 @@ select_aosp_version() {
 
 # Initialize AOSP source
 init_aosp() {
-    local aosp_dir="${GLASSPORTS_ROOT}/aosp"
+    local aosp_dir="${GLASSPORTS_AOSP}"
 
     if [ -z "$AOSP_BRANCH" ]; then
         log_error "AOSP branch not selected. Run 'select_aosp_version' first."
@@ -150,7 +161,7 @@ init_aosp() {
 
 # Sync AOSP source
 sync_aosp() {
-    local aosp_dir="${GLASSPORTS_ROOT}/aosp"
+    local aosp_dir="${GLASSPORTS_AOSP}"
     local jobs="${1:-4}"
 
     if [ ! -d "$aosp_dir/.repo" ]; then
@@ -169,7 +180,7 @@ sync_aosp() {
 
 # Setup device tree
 setup_device() {
-    local aosp_dir="${GLASSPORTS_ROOT}/aosp"
+    local aosp_dir="${GLASSPORTS_AOSP}"
 
     if [ ! -d "$aosp_dir" ]; then
         log_error "AOSP directory not found"
@@ -200,7 +211,7 @@ setup_device() {
 
 # Build the ROM
 build_rom() {
-    local aosp_dir="${GLASSPORTS_ROOT}/aosp"
+    local aosp_dir="${GLASSPORTS_AOSP}"
     local jobs="${1:-$(nproc)}"
 
     if [ ! -d "$aosp_dir" ]; then
@@ -228,7 +239,7 @@ build_rom() {
 
 # Clean build
 clean_build() {
-    local aosp_dir="${GLASSPORTS_ROOT}/aosp"
+    local aosp_dir="${GLASSPORTS_AOSP}"
 
     if [ -d "$aosp_dir" ]; then
         log_info "Cleaning build artifacts..."
@@ -242,7 +253,7 @@ clean_build() {
 
 # Package ROM
 package_rom() {
-    local aosp_dir="${GLASSPORTS_ROOT}/aosp"
+    local aosp_dir="${GLASSPORTS_AOSP}"
     local output_dir="${GLASSPORTS_OUT}"
     local timestamp=$(date +%Y%m%d_%H%M%S)
     local version="${AOSP_BRANCH:-unknown}"
