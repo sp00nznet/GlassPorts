@@ -57,6 +57,7 @@ install_debian() {
         unzip \
         curl \
         wget \
+        file \
         zlib1g-dev \
         gcc-multilib \
         g++-multilib \
