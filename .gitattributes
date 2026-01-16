@@ -1,0 +1,23 @@
+# Force Unix line endings for shell scripts (critical for WSL)
+*.sh text eol=lf
+*.bash text eol=lf
+
+# Force Unix line endings for other script types
+*.py text eol=lf
+*.pl text eol=lf
+
+# Makefiles need Unix line endings
+Makefile text eol=lf
+*.mk text eol=lf
+
+# Keep Windows batch files with CRLF
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# Binary files
+*.img binary
+*.bin binary
+*.so binary
+*.zip binary
+*.gz binary
+*.tar binary
