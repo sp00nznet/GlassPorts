@@ -152,6 +152,9 @@ REM ============================================================================
 echo %BLUE%[STEP 3/7]%NC% Installing Linux build dependencies...
 echo.
 
+REM Fix line endings (Windows may have converted them to CRLF)
+wsl bash -c "cd '%WSL_PATH%' && find build -name '*.sh' -exec sed -i 's/\r$//' {} \; 2>/dev/null"
+
 wsl bash -c "cd '%WSL_PATH%' && chmod +x build/tools/*.sh build/tools/*.py 2>/dev/null; bash build/tools/install-deps.sh"
 
 if %errorlevel% neq 0 (
