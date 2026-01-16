@@ -6,6 +6,11 @@
 
 set -e
 
+# Ensure $HOME/bin is in PATH (for repo tool)
+if [[ ":$PATH:" != *":$HOME/bin:"* ]]; then
+    export PATH="$HOME/bin:$PATH"
+fi
+
 # Configuration
 export GLASSPORTS_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 export GLASSPORTS_BUILD="${GLASSPORTS_ROOT}/build"
