@@ -100,9 +100,21 @@ if %errorlevel% neq 0 (
     exit /b 0
 )
 
-REM Check if Ubuntu is installed
-wsl -l -q 2>nul | findstr /i "ubuntu" >nul
-if %errorlevel% neq 0 (
+REM Check if Ubuntu is installed (use PowerShell to handle Unicode output from wsl -l)
+set "UBUNTU_FOUND=0"
+for /f "usebackq delims=" %%i in (`powershell -NoProfile -Command "(wsl -l -q 2>$null) -join ',' -replace '\x00','' | Select-String -Pattern 'Ubuntu' -Quiet"`) do (
+    if "%%i"=="True" set "UBUNTU_FOUND=1"
+)
+
+if "%UBUNTU_FOUND%"=="0" (
+    REM Double-check using wsl -d to see if Ubuntu actually responds
+    wsl -d Ubuntu -e echo "test" >nul 2>&1
+    if !errorlevel! equ 0 (
+        set "UBUNTU_FOUND=1"
+    )
+)
+
+if "%UBUNTU_FOUND%"=="0" (
     echo %YELLOW%[INFO]%NC% Ubuntu not found in WSL. Installing...
     wsl --install -d Ubuntu
     echo.
