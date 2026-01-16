@@ -46,7 +46,7 @@ install_debian() {
 
     sudo apt-get update
 
-    # Core build tools
+    # Core build tools (ncurses handled separately due to version differences)
     sudo apt-get install -y \
         git-core \
         gnupg \
@@ -61,8 +61,6 @@ install_debian() {
         gcc-multilib \
         g++-multilib \
         libc6-dev-i386 \
-        libncurses5 \
-        lib32ncurses5-dev \
         x11proto-core-dev \
         libx11-dev \
         lib32z1-dev \
@@ -71,6 +69,14 @@ install_debian() {
         xsltproc \
         fontconfig \
         imagemagick
+
+    # ncurses - try ncurses6 first (newer distros), fall back to ncurses5
+    sudo apt-get install -y libncurses6 libncurses-dev 2>/dev/null || \
+        sudo apt-get install -y libncurses5 libncurses5-dev 2>/dev/null || true
+
+    # 32-bit ncurses - try newer package names first
+    sudo apt-get install -y lib32ncurses-dev 2>/dev/null || \
+        sudo apt-get install -y lib32ncurses5-dev 2>/dev/null || true
 
     # Python
     sudo apt-get install -y python3 python3-pip python-is-python3 || \
