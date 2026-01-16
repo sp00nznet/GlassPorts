@@ -2,9 +2,16 @@
 <!--
     GlassPorts Local Manifest
     Adds Google Glass device tree to AOSP build
+
+    Note: remove-project elements are commented out because they cause
+    errors if the project doesn't exist in the target AOSP version.
+    This is fine - we just won't remove default apps from the sync.
 -->
 <manifest>
-    <!-- Remove default launchers and apps we don't need -->
+    <!--
+    Remove default launchers and apps we don't need
+    Commented out to avoid errors on different AOSP versions
+
     <remove-project name="platform/packages/apps/Launcher2" />
     <remove-project name="platform/packages/apps/Launcher3" />
     <remove-project name="platform/packages/apps/Browser" />
@@ -18,6 +25,7 @@
     <remove-project name="platform/packages/apps/Gallery2" />
     <remove-project name="platform/packages/apps/Music" />
     <remove-project name="platform/packages/apps/QuickSearchBox" />
+    -->
 
     <!-- GlassPorts device tree (will be symlinked from local) -->
     <!--
