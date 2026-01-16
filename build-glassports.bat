@@ -193,6 +193,9 @@ REM ============================================================================
 
 echo %BLUE%[STEP 5/7]%NC% Initializing AOSP source (this will take a while)...
 echo.
+echo %YELLOW%[NOTE]%NC% AOSP requires a case-sensitive filesystem.
+echo       Source will be stored in WSL at: ~/GlassPorts-aosp
+echo.
 
 REM Create the automated build script
 echo #!/bin/bash > "%SCRIPT_DIR%\build\temp_build.sh"
