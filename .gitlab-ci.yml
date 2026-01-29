@@ -1,0 +1,61 @@
+stages:
+  - validate
+  - build
+
+variables:
+  ANDROID_VERSION: "9"
+  PARALLEL_JOBS: "4"
+  GIT_SUBMODULE_STRATEGY: recursive
+
+default:
+  tags:
+    - debian
+
+validate:
+  stage: validate
+  script:
+    - echo "Validating build scripts..."
+    - bash -n build-glassports.sh
+    - bash -n build/envsetup.sh
+    - echo "Checking required files..."
+    - test -f build.config
+    - test -d device
+    - test -d kernel
+    - test -d packages
+    - test -d vendor
+    - echo "Validation passed"
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+
+build:
+  stage: build
+  script:
+    - echo "Starting GlassPorts build for Android $ANDROID_VERSION"
+    - chmod +x build-glassports.sh
+    - ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --skip-deps
+  artifacts:
+    paths:
+      - out/*.zip
+      - out/*.img
+    expire_in: 1 week
+  rules:
+    - if: $CI_COMMIT_BRANCH == $CI_DEFAULT_BRANCH
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+  timeout: 6h
+
+build:manual:
+  stage: build
+  script:
+    - echo "Starting full GlassPorts build for Android $ANDROID_VERSION"
+    - chmod +x build-glassports.sh
+    - ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --clean
+  artifacts:
+    paths:
+      - out/*.zip
+      - out/*.img
+    expire_in: 1 week
+  when: manual
+  allow_failure: true
+  timeout: 8h
