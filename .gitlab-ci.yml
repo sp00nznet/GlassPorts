@@ -43,7 +43,12 @@ build:
   script:
     - echo "Starting GlassPorts build for Android $ANDROID_VERSION"
     - chmod +x build-glassports.sh
-    - ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --skip-deps
+    # Start heartbeat to prevent stuck job timeout (prints every 5 min)
+    - |
+      (while true; do echo "[heartbeat] $(date) - build in progress..."; sleep 300; done) &
+      HEARTBEAT_PID=$!
+      trap "kill $HEARTBEAT_PID 2>/dev/null" EXIT
+      ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --skip-deps
   artifacts:
     paths:
       - out/*.zip
@@ -60,7 +65,12 @@ build:manual:
   script:
     - echo "Starting full GlassPorts build for Android $ANDROID_VERSION"
     - chmod +x build-glassports.sh
-    - ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --clean
+    # Start heartbeat to prevent stuck job timeout (prints every 5 min)
+    - |
+      (while true; do echo "[heartbeat] $(date) - build in progress..."; sleep 300; done) &
+      HEARTBEAT_PID=$!
+      trap "kill $HEARTBEAT_PID 2>/dev/null" EXIT
+      ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --clean
   artifacts:
     paths:
       - out/*.zip
