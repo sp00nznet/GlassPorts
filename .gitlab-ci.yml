@@ -10,9 +10,19 @@ variables:
 default:
   tags:
     - debian
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq curl wget git python3 make gcc g++ zip unzip openjdk-11-jdk
+    - mkdir -p $HOME/bin
+    - export PATH="$HOME/bin:$PATH"
+    - curl -s https://storage.googleapis.com/git-repo-downloads/repo > $HOME/bin/repo
+    - chmod a+x $HOME/bin/repo
+    - git config --global user.email "ci@buildforever.cloud"
+    - git config --global user.name "GitLab CI"
 
 validate:
   stage: validate
+  before_script: []
   script:
     - echo "Validating build scripts..."
     - bash -n build-glassports.sh
