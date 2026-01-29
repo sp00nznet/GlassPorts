@@ -172,7 +172,25 @@ sync_aosp() {
     log_info "Syncing AOSP source with $jobs parallel jobs..."
 
     cd "$aosp_dir"
-    repo sync -c -j"$jobs" --no-tags --no-clone-bundle
+
+    # Start progress reporter for CI environments (prevents stuck job timeout)
+    (
+        while true; do
+            sleep 120
+            echo "[sync progress] $(date '+%H:%M:%S') - sync in progress, $(du -sh . 2>/dev/null | cut -f1) downloaded..."
+        done
+    ) &
+    PROGRESS_PID=$!
+
+    repo sync -c -j"$jobs" --no-tags --no-clone-bundle --verbose
+    SYNC_STATUS=$?
+
+    kill $PROGRESS_PID 2>/dev/null || true
+
+    if [ $SYNC_STATUS -ne 0 ]; then
+        log_error "Repo sync failed"
+        return 1
+    fi
 
     log_success "AOSP sync complete"
     return 0
