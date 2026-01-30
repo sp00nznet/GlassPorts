@@ -20,13 +20,16 @@ export GLASSPORTS_VENDOR="${GLASSPORTS_ROOT}/vendor/google/glass"
 export GLASSPORTS_KERNEL="${GLASSPORTS_ROOT}/kernel/omap"
 
 # AOSP must be on a case-sensitive filesystem
-# If running on Windows/WSL, use the native Linux filesystem
-if [[ "$GLASSPORTS_ROOT" == /mnt/* ]]; then
-    # Running from Windows mount - use WSL native filesystem for AOSP
+# Determine where to store AOSP source
+if [[ -n "$CI" ]]; then
+    # CI environment - use working directory (has plenty of space)
+    export GLASSPORTS_AOSP="${GLASSPORTS_ROOT}/aosp"
+elif [[ "$GLASSPORTS_ROOT" == /mnt/[a-z]/* ]]; then
+    # WSL Windows mount (e.g., /mnt/c/, /mnt/d/) - use native Linux filesystem
     export GLASSPORTS_AOSP="$HOME/GlassPorts-aosp"
     log_warning "Windows filesystem detected. AOSP will be stored in: $GLASSPORTS_AOSP" 2>/dev/null || true
 else
-    # Native Linux - can use local directory
+    # Native Linux or other mount - use local directory
     export GLASSPORTS_AOSP="${GLASSPORTS_ROOT}/aosp"
 fi
 
