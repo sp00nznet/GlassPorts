@@ -19,6 +19,9 @@ default:
     - chmod a+x $HOME/bin/repo
     - git config --global user.email "ci@buildforever.cloud"
     - git config --global user.name "GitLab CI"
+    # Clean up any stale AOSP directories from previous runs to prevent repo reuse issues
+    - rm -rf $HOME/GlassPorts-aosp $HOME/.repoconfig 2>/dev/null || true
+    - echo "Working directory is $(pwd) on $(df -h . | tail -1 | awk '{print $2}') disk"
 
 validate:
   stage: validate
@@ -45,7 +48,7 @@ build:
     - chmod +x build-glassports.sh
     - |
       # Watchdog process - prints status every 60 seconds to prevent CI stuck detection
-      (while true; do sleep 60; echo "[watchdog] $(date) - build active, disk: $(df -h / | tail -1 | awk '{print $3"/"$2}')"; done) &
+      (while true; do sleep 60; echo "[watchdog] $(date) - build active, disk: $(df -h . | tail -1 | awk '{print $3"/"$2}')"; done) &
       WATCHDOG_PID=$!
       ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --skip-deps
       BUILD_STATUS=$?
