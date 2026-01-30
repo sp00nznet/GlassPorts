@@ -43,7 +43,14 @@ build:
   script:
     - echo "Starting GlassPorts build for Android $ANDROID_VERSION"
     - chmod +x build-glassports.sh
-    - ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --skip-deps
+    - |
+      # Watchdog process - prints status every 60 seconds to prevent CI stuck detection
+      (while true; do sleep 60; echo "[watchdog] $(date) - build active, disk: $(df -h / | tail -1 | awk '{print $3"/"$2}')"; done) &
+      WATCHDOG_PID=$!
+      ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --skip-deps
+      BUILD_STATUS=$?
+      kill $WATCHDOG_PID 2>/dev/null || true
+      exit $BUILD_STATUS
   artifacts:
     paths:
       - out/*.zip
@@ -60,7 +67,13 @@ build:manual:
   script:
     - echo "Starting full GlassPorts build for Android $ANDROID_VERSION"
     - chmod +x build-glassports.sh
-    - ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --clean
+    - |
+      (while true; do sleep 60; echo "[watchdog] $(date) - build active"; done) &
+      WATCHDOG_PID=$!
+      ./build-glassports.sh --version $ANDROID_VERSION --jobs $PARALLEL_JOBS --clean
+      BUILD_STATUS=$?
+      kill $WATCHDOG_PID 2>/dev/null || true
+      exit $BUILD_STATUS
   artifacts:
     paths:
       - out/*.zip

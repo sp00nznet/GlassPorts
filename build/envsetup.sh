@@ -173,22 +173,19 @@ sync_aosp() {
 
     cd "$aosp_dir"
 
-    # Start progress reporter for CI environments (prevents stuck job timeout)
-    (
-        while true; do
-            sleep 120
-            echo "[sync progress] $(date '+%H:%M:%S') - sync in progress, $(du -sh . 2>/dev/null | cut -f1) downloaded..."
-        done
-    ) &
-    PROGRESS_PID=$!
-
-    repo sync -c -j"$jobs" --no-tags --no-clone-bundle --verbose
-    SYNC_STATUS=$?
-
-    kill $PROGRESS_PID 2>/dev/null || true
+    # Run repo sync with progress output to prevent CI timeout
+    # Uses --force-sync to handle any interrupted syncs
+    repo sync -c -j"$jobs" --no-tags --no-clone-bundle --force-sync 2>&1 | while IFS= read -r line; do
+        echo "$line"
+        # Print keepalive every 100 lines to ensure CI sees activity
+        if (( ++_line_count % 100 == 0 )); then
+            echo "[keepalive] $(date '+%H:%M:%S') - $_line_count lines, sync continuing..."
+        fi
+    done
+    SYNC_STATUS=${PIPESTATUS[0]}
 
     if [ $SYNC_STATUS -ne 0 ]; then
-        log_error "Repo sync failed"
+        log_error "Repo sync failed with status $SYNC_STATUS"
         return 1
     fi
 
